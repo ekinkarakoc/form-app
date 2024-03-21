@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+const initialFormValues = { full_name: "", phone_number: "" };
 
-function Form() {
-  const [form, setForm] = useState({ full_name: "", phone_number: "" });
+function Form(props) {
+  const { setContacts, contacts } = props;
+
+  const [form, setForm] = useState(initialFormValues);
 
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    setForm(initialFormValues);
+  }, [contacts]);
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     if (form.full_name === "" || form.phone_number === "") return;
 
-    console.log(form);
+    setContacts([...contacts, form]);
   };
 
   return (
@@ -21,6 +28,7 @@ function Form() {
         <input
           name="full_name"
           placeholder="Full Name"
+          value={form.full_name}
           onChange={changeHandler}
         />
       </div>
@@ -28,6 +36,7 @@ function Form() {
         <input
           name="phone_number"
           placeholder="Phone Number"
+          value={form.phone_number}
           onChange={changeHandler}
         />
       </div>
